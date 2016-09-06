@@ -56,7 +56,7 @@ protected:
     /// Schedule only when other timers and events are processed
     virtual bool IsIdle() const = 0;
 
-    virtual bool ReadyForSchedule( const sal_uInt64 nTime, const bool bTimer ) = 0;
+    virtual bool ReadyForSchedule( const sal_uInt64 nTime, const bool bIdle ) = 0;
     virtual void UpdateMinPeriod( const sal_uInt64 nTime, sal_uInt64 &nMinPeriod ) = 0;
 
 public:
@@ -86,7 +86,7 @@ public:
     /// Calculate minimum timeout - and return its value.
     static sal_uInt64 CalculateMinimumTimeout( bool &bHasActiveIdles );
     /// Process one pending task ahead of time with highest priority.
-    static bool       ProcessTaskScheduling( bool bTimerOnly );
+    static bool       ProcessTaskScheduling( bool bIdle );
     /// Process all events until we are idle
     static void       ProcessEventsToIdle();
 

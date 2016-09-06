@@ -70,7 +70,7 @@ struct ImplSchedulerData
     void Invoke();
 
     const char *GetDebugName() const;
-    static ImplSchedulerData *GetMostImportantTask( const sal_uInt64 nTime, const bool bTimerOnly );
+    static ImplSchedulerData *GetMostImportantTask( const sal_uInt64 nTime, const bool bIdle );
 };
 
 #endif // INCLUDED_VCL_INC_SALTIMER_HXX

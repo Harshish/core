@@ -31,7 +31,7 @@ void Timer::SetDeletionFlags()
     }
 }
 
-bool Timer::ReadyForSchedule( const sal_uInt64 nTime, bool /* bTimer */ )
+bool Timer::ReadyForSchedule( const sal_uInt64 nTime, bool /* bIdle */ )
 {
     return (mpSchedulerData->mnUpdateTime + mnTimeout) <= nTime;
 }
