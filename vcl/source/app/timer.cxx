@@ -45,7 +45,7 @@ void Timer::UpdateMinPeriod( const sal_uInt64 nTime, sal_uInt64 &nMinPeriod )
 {
     sal_uInt64 nWakeupTime = mpSchedulerData->mnUpdateTime + mnTimeout;
     if( nWakeupTime <= nTime )
-        nMinPeriod = ImmediateTimeoutMs;
+        nMinPeriod = Scheduler::ImmediateTimeoutMs;
     else
     {
         sal_uInt64 nSleepTime = nWakeupTime - nTime;
@@ -55,15 +55,15 @@ void Timer::UpdateMinPeriod( const sal_uInt64 nTime, sal_uInt64 &nMinPeriod )
 }
 
 Timer::Timer(const sal_Char *pDebugName) :
-    Scheduler(pDebugName),
-    mnTimeout(ImmediateTimeoutMs),
+    Task(pDebugName),
+    mnTimeout(Scheduler::ImmediateTimeoutMs),
     mbAuto(false)
 {
-    mePriority = SchedulerPriority::HIGHEST;
+    mePriority = TaskPriority::HIGHEST;
 }
 
 Timer::Timer( const Timer& rTimer ) :
-    Scheduler(rTimer),
+    Task(rTimer),
     mnTimeout(rTimer.mnTimeout),
     mbAuto(rTimer.mbAuto)
 {
@@ -77,8 +77,8 @@ void Timer::Invoke()
 
 void Timer::Start()
 {
-    Scheduler::Start();
-    Scheduler::ImplStartTimer(mnTimeout);
+    Task::Start();
+    Task::StartTimer( mnTimeout );
 }
 
 void Timer::SetTimeout( sal_uInt64 nNewTimeout )
@@ -86,14 +86,12 @@ void Timer::SetTimeout( sal_uInt64 nNewTimeout )
     mnTimeout = nNewTimeout;
     // If timer is active, then renew clock.
     if ( mbActive )
-    {
-        Scheduler::ImplStartTimer(mnTimeout);
-    }
+        StartTimer( mnTimeout );
 }
 
 Timer& Timer::operator=( const Timer& rTimer )
 {
-    Scheduler::operator=(rTimer);
+    Task::operator=(rTimer);
     maTimeoutHdl = rTimer.maTimeoutHdl;
     mnTimeout = rTimer.mnTimeout;
     mbAuto = rTimer.mbAuto;
